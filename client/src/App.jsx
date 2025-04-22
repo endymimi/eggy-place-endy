@@ -21,6 +21,7 @@ import Test from "./pages/Test.jsx";
 import DeliveredPage from "./pages/DeliveredPage.jsx";
 import CancelledPage from "./pages/CancelledPage.jsx";
 import RoleBasedRoutes from "./routes/RoleBasedRoutes.jsx";
+import OrderDetails from "./pages/OrderDetails.jsx";
 
 // const cartItemsFromLocalStorage = JSON.parse(localStorage.getItem('cart')) || []
 
@@ -106,6 +107,9 @@ function App() {
               <Route path="/product/:productId" element={<Product />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/check-out" element={<CheckOut />} />
+              <Route  path="/orders/delivered/:orderId"  element={<PrivateRoute>
+                <OrderDetails/>
+              </PrivateRoute>} />
               <Route
                 path="/dashboard"
                 element={

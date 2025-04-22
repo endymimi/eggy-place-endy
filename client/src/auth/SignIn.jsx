@@ -15,7 +15,8 @@ import { useAuth } from "../context/AuthContext";
 const baseUrl = import.meta.env.VITE_API_URL;
 
 const SignIn = ({ switchToSignUp }) => {
-  const [isReveal, setIsReveal] = useState(false)
+  const [isReveal, setIsReveal] = useState(false);
+  const [isError,setIsError] = useState(null)
   const {login} = useAuth()
   function togglePwd(){
     setIsReveal((prev)=> !prev)
@@ -40,7 +41,10 @@ const SignIn = ({ switchToSignUp }) => {
       })
       const res = await req.json();
       if(!res.success){
-        toast.error(res.errMsg)
+        // toast.error(res.errMsg);
+      
+        setIsError(res.errMsg)
+        setTimeout(() => setIsError(null), 3000);
       }
       if(res.success){
         toast.success(res.message)
@@ -61,6 +65,7 @@ const SignIn = ({ switchToSignUp }) => {
 
   return (
     <>
+     
       <main>
         <div className="text-[#FBFBFB]">
           <h6 className="text-[#FBFBFB] font-[500] text-[26px] pt-8">
@@ -68,6 +73,7 @@ const SignIn = ({ switchToSignUp }) => {
           </h6>
           <p className="text-[14px] font-[400] pb-6 ">Sign In To Your Account </p>
         </div>
+        
         <form className="flex flex-col gap-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div>
 
@@ -81,7 +87,11 @@ const SignIn = ({ switchToSignUp }) => {
           <img className=" absolute top-2.5  left-[90%]" src={isReveal ? visibilityOff : visibilityOn} alt="toggle-password-img" onClick={togglePwd} />
           <p className="text-red-600">{errors.password?.message}</p>
           </div>
-
+          {isError && (
+  <div className="text-red-500 bg-red-100 px-4 py-2 rounded mt-2 text-sm">
+    {isError}
+  </div>
+)}
           <Link to="/forgot-password" className="text-[#FBFBFB] text-[10px] font[400] underline">Forgot Password?</Link>
           <MyButton text={btnText} className="w-full h-[40px] font-[500] text-[20px] " disabled={isSubmitting} />
         </form>

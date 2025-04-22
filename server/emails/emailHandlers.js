@@ -1,5 +1,6 @@
-import { createTransport } from "nodemailer";
-import { resetPasswordEmailTemplate, sendOrderMailTemplate } from "./emailTemplate.js";
+import {createTransport} from "nodemailer";
+import { resetPasswordEmailTemplate,orderCreatedEmailTemplate } from "./emailTemplate.js";
+
 
 export const sendForgotPasswordMail = (options) => {
     const transporter = createTransport({
@@ -12,9 +13,9 @@ export const sendForgotPasswordMail = (options) => {
     const mailOptions = {
       from: process.env.EMAIL_USERNAME,
       to: options.to,
-      subject: "Reset Password",
+      subject: "Reset password",
       html:  resetPasswordEmailTemplate(options.firstName, options.resetUrl),
-      category: "Reset Password",
+      category: "Reset password",
     };
   
     transporter.sendMail(mailOptions, function (error, info) {
@@ -26,7 +27,14 @@ export const sendForgotPasswordMail = (options) => {
     });
   };
 
-  export const sendOrderMail = (options) => {
+
+
+
+
+
+
+
+  export const sendOrder = (order) => {
     const transporter = createTransport({
       service: "gmail",
       auth: {
@@ -34,19 +42,19 @@ export const sendForgotPasswordMail = (options) => {
         pass: process.env.EMAIL_PASSWORD,
       },
     });
+  
     const mailOptions = {
-      from: process.env.EMAIL_USERNAME,
-      to: options.to,
-      subject: "Send Order Mail",
-      html:  resetPasswordEmailTemplate(options.firstName, options.resetUrl),
-      category: "Send Order Mail",
+      from: process.env.EMAIL_FROM,
+      to: order.recipientInfo.email,
+      subject: "Order Confirmation - Eggys-place",
+      html: orderCreatedEmailTemplate(order),
     };
   
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
-        console.log(error);
+        console.error("Error sending order email:", error);
       } else {
-        console.log("Order Mail sent: " + info.response);
+        console.log("Order confirmation email sent:", info.response);
       }
     });
   };

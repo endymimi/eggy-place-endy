@@ -1,4 +1,5 @@
 import ORDER from "../models/OrderModel.js";
+import { sendOrder } from "../emails/emailHandlers.js";
 
 export const createOrder  = async (req,res)=>{
     try {
@@ -16,6 +17,8 @@ export const createOrder  = async (req,res)=>{
 
         const order = await ORDER.create({...req.body,status:"paid"});
         res.status(201).json({success:true,message:"order created",order})
+        sendOrder(order);
+
     } catch (error) {
       res.status(500).json(error.message)  
     }
@@ -52,17 +55,34 @@ export const customerOrder = async (req,res)=>{
         res.status(500).json(error.message)
     }
 }
-// orders for customer
-// export const customerOrder = async (req,res)=>{
-//     const {userId} = req.user;
-//     try {
-//         const orders = await ORDER.find({user:userId}).select("orderItems createdAt").sort({ createdAt: -1 })
-//         if(orders.length < 1){
-//             return res.status(400).json({success:false,errMsg:"you have not created any order yet"})
-//         }
 
-//         res.status(200).json({success:true,message:"your oder(s)", orders});
-//     } catch (error) {
-//         res.status(500).json(error.message)
-//     }
-// }
+// controllers/orderController.js
+
+export const getSingleOrder = async (req, res) => {
+    try {
+        const orderId = req.params.orderId;
+        const userId = req.user.userId;
+  
+      const order = await ORDER.findOne({ _id: orderId, user: userId });
+  
+      if (!order) {
+        return res.status(404).json({
+          success: false,
+          errMsg: "Order not found or access denied",
+        });
+      }
+  
+      res.status(200).json({
+        success: true,
+        message: "Order details fetched successfully",
+        order,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errMsg: "Server error",
+        error: error.message,
+      });
+    }
+  };
+  

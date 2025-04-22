@@ -55,7 +55,7 @@ const ResetPwd = () => {
             navigate("/")
           }
         } catch (error) {
-          console.log(error.message);
+          // console.log(error.message);
           
         }
       };
@@ -118,8 +118,6 @@ const ResetPwd = () => {
           </div>
         </form>
       </main>
-      {/* <Toaster /> */}
-
     </>
   );
 };

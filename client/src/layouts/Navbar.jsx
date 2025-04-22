@@ -13,6 +13,10 @@ import signInLogo from "../assets/sign-in-logo.png";
 import arrowDown from "../assets/drop-down-img.svg";
 import arrowUp from "../assets/arrow-up-2.png";
 import { useAuth } from "../context/AuthContext";
+import orderIcon from "../assets/orderIcon.svg";
+import logOut from "../assets/logoutIcon.svg";
+import helloIcon from "../assets/helloIcon.svg";
+import checkIcon from "../assets/checkIcon.svg";
 
 const Navbar = () => {
   const [isLoggedIn, setIsloggedIn] = useState(!false);
@@ -119,25 +123,83 @@ const Navbar = () => {
                         </div>
                         <ul
                           tabIndex={0}
-                          className="dropdown-content menu  rounded-box z-1 w-36 h-36 md:h-30 text-[#FBFBFB] p-2 shadow-sm mt-7 bg-[#252422]"
+                          className="dropdown-content menu  rounded-box z-1 w-36 md:h-50 text-[#FBFBFB] p-2 shadow-sm mt-7 bg-[#252422]"
                         >
                           <li className="ps-3 font-bold text-[16px] md:hidden ">
                             Hi, {user.firstName}
                           </li>
                           
                             {user.role === "admin" && (
+                              
                               <li>
 
                                 <Link to="/dashboard">Dashboard</Link>
                               </li>
                             )}
-                          
+                            
+                              
+                              <li className="text-white hover:bg-[#B67B0F]  cursor-pointer">
+                          <a>
+                            <img src={helloIcon} alt="" /> My Account
+                          </a>
+                        </li>
+                       
+                           
+                          <li className="text-white hover:bg-[#B67B0F]  cursor-pointer">
+                            <Link to="/orders"><img src={orderIcon} alt="orderImg" />Orders</Link>
+                          </li>
                           <li>
-                            <Link to="/orders">Orders</Link>
-                          </li>
-                          <li onClick={logout} className="cursor-pointer">
-                            Logout
-                          </li>
+                          <a>
+                           
+                            <button className=" hover:bg-[#B67B0F] cursor-pointer flex gap-2 text-[16px] text-red-600 "
+                                              onClick={() =>
+                                                document.getElementById("my_modal_2").showModal()
+                                              }
+                                            >
+                                              <img src={logOut} alt="" /> Log Out
+                                      </button>
+                          </a>
+                        </li>
+                        <dialog
+                      id="my_modal_2"
+                      className="modal h-fit flex justify-center items-center"
+                    >
+                      <form method="dialog" className="modal-backdrop">
+                        <div className="modal-box bg-[#252422] w-[425px]  p-6 flex flex-col items-center justify-center text-center ">
+                          <div>
+                            <img
+                              className="mb-4"
+                              src={checkIcon}
+                              // src={checkIcon}
+                              alt="check-image"
+                            />
+                          </div>
+                          <h3 className="font-bold text-lg text-white ">
+                            Log Out
+                          </h3>
+                          <p className="py-4 text-white">
+                            {" "}
+                            Are you sure, you want to Log out?
+                          </p>
+                          <div className="flex justify-center gap-17 w-full mt-4">
+                            <button
+                              onClick={logout}
+                              className="btn text-white rounded-4xl bg-[#252422] w-35 h-10"
+                            >
+                              Log Out
+                            </button>
+                            <button className="btn cursor-pointer text-white rounded-4xl bg-[#B67B0F] w-35 h-10">
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* <button>close</button> */}
+                      </form>
+                    </dialog>
+                       
+                          
+                 
                         </ul>
                       </div>
                     </div>
@@ -146,7 +208,7 @@ const Navbar = () => {
                   <div className="cursor-pointer flex items-center w-[98px] h-[50px] justify-center  md:w-[124px] lg:h-[56px] py-[15px] px-[20px]  bg-[#F0F0F0]  rounded-full ">
                     <img src={loginLogo} alt="login-logo" />{" "}
                     <span className="ps-2 text-[#100101] font-[500] text-[20px]">
-                      {" "}
+                      {" "} 
                       <AuthModal text="Login" />{" "}
                     </span>
                   </div>

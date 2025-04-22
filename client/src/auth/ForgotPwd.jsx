@@ -32,7 +32,6 @@ const ForgotPwd = () => {
         body:JSON.stringify(data)
       })
       const res = await req.json();
-      console.log(res);
       if(!res.success){
         toast.error(res.errMsg)
       }
@@ -71,9 +70,7 @@ const ForgotPwd = () => {
             />
           </div>
         </form>
-      </main>
-            {/* <Toaster /> */}
-      
+      </main>      
     </>
   );
 };
